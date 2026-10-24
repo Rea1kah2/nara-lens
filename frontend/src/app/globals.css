@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme static {
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
+  --radius-full: 9999px;
+  --font-display: var(--font-sora), system-ui, sans-serif;
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: light dark;
+  --glass-intensity: 0.52;
+  --glass-hl-scale: 1;
+
+  /* Brand Palette — Deep Navy & Teal/Mint (Brief Poin 7) */
+  --navy: #0c1b33;
+  --navy-deep: #060f1d;
+  --accent: #0c1b33;
+  --accent-strong: #071224;
+  --accent-soft: #e2e8f0;
+
+  /* Exploration & Clarity — Teal / Mint */
+  --teal: #0d9488;
+  --teal-strong: #0f766e;
+  --teal-soft: #ccfbf1;
+
+  /* Fact, Claims, Allegations Tones */
+  --amber: #d97706;
+  --amber-soft: #fef3c7;
+  --rose: #dc2626;
+  --rose-soft: #fee2e2;
+
+  /* Readability Canvas — White and Light Grey */
+  --bg: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --surface: 255 255 255;
+  --surface-soft: 241 245 249;
+  --text: #09172a;
+  --muted: #475569;
+  --line: #cbd5e1;
+  --separator: rgba(15, 23, 42, 0.08);
+
+  /* Glass Formula */
+  --glass-tint-rgb: 255 255 255;
+  --glass-rim-rgb: 255 255 255;
+  --glass-shadow-rgb: 12 27 51;
+  --glass-alpha: 0.78;
+}
+
+[data-theme="dark"] {
+  --glass-hl-scale: 0.6;
+
+  --navy: #1e3a5f;
+  --navy-deep: #060f1d;
+  --accent: #38bdf8;
+  --accent-strong: #0284c7;
+  --accent-soft: rgba(56, 189, 248, 0.15);
+
+  --teal: #14b8a6;
+  --teal-strong: #2dd4bf;
+  --teal-soft: rgba(20, 184, 166, 0.18);
+
+  --amber: #fbbf24;
+  --amber-soft: rgba(251, 191, 36, 0.15);
+  --rose: #f87171;
+  --rose-soft: rgba(248, 113, 113, 0.15);
+
+  --bg: #060f1d;
+  --bg-secondary: #0a172c;
+  --surface: 11 26 46;
+  --surface-soft: 16 35 60;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --line: rgba(148, 163, 184, 0.18);
+  --separator: rgba(241, 245, 249, 0.1);
+
+  --glass-tint-rgb: 11 26 46;
+  --glass-rim-rgb: 148 163 184;
+  --glass-shadow-rgb: 0 0 0;
+  --glass-alpha: 0.62;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Glass System — Coastal editorial style */
+.glass {
+  --glass-i: var(--glass-intensity);
+  --glass-blur: calc(var(--glass-i) * 28px);
+  --glass-saturate: calc(110% + var(--glass-i) * 50%);
+  --glass-rim-alpha: calc((0.15 + var(--glass-i) * 0.35) * var(--glass-hl-scale));
+  --glass-spec-alpha: calc((0.2 + var(--glass-i) * 0.4) * var(--glass-hl-scale));
+  --glass-shadow-alpha: calc(0.03 + var(--glass-i) * 0.1);
+
+  position: relative;
+  isolation: isolate;
+  background: rgb(var(--glass-tint-rgb) / var(--glass-alpha));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--line);
+  box-shadow:
+    inset 0 1px 0 rgb(var(--glass-rim-rgb) / var(--glass-spec-alpha)),
+    0 1px 3px rgb(var(--glass-shadow-rgb) / 0.05),
+    0 8px 28px rgb(var(--glass-shadow-rgb) / var(--glass-shadow-alpha));
+}
+
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  background: linear-gradient(
+    140deg,
+    rgb(var(--glass-rim-rgb) / calc(var(--glass-spec-alpha) * 0.3)) 0%,
+    transparent 50%
+  );
+}
+
+.glass-thick {
+  --glass-intensity: 0.75;
+  --glass-alpha: 0.88;
+}
+
+.glass-thin {
+  --glass-intensity: 0.28;
+  --glass-alpha: 0.42;
+}
+
+.glass-interactive {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.22s ease;
+}
+
+.glass-interactive:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgb(var(--glass-rim-rgb) / 0.5),
+    0 12px 36px rgb(var(--glass-shadow-rgb) / 0.14);
+  border-color: rgba(41, 82, 204, 0.3);
+}
+
+/* Page canvas with subtle deep navy and teal aura */
+.mesh {
+  background:
+    radial-gradient(ellipse 55% 45% at 10% 0%, rgb(12 27 51 / 0.05), transparent),
+    radial-gradient(ellipse 45% 40% at 88% 10%, rgb(13 148 136 / 0.06), transparent),
+    radial-gradient(ellipse 38% 35% at 50% 85%, rgb(12 27 51 / 0.04), transparent),
+    var(--bg);
+}
+
+/* Subtle grid overlay */
+.soft-grid {
+  background-image:
+    linear-gradient(to right, rgb(15 23 42 / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(15 23 42 / 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Focus ring */
+.focus-ring:focus-visible {
+  outline: 2.5px solid rgb(13 148 136 / 0.5);
+  outline-offset: 3px;
+}
+
+/* Eyebrow label — editorial, upper-spaced */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 1rem;
+  height: 2px;
+  background: currentColor;
+  border-radius: 9999px;
+}
+
+/* Font utility for display/heading */
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Bottom nav safe area support */
+.pb-safe {
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}
+
+/* Hide scrollbar for horizontal nav */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
